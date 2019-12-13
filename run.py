@@ -21,6 +21,7 @@ ROOT = os.path.abspath(os.path.dirname(__file__))
 path = lambda *a: os.path.join(*a)
 site.addsitedir(path('vendor'))
 
+
 class Application(tornado.web.Application):
     def __init__(self):
         handlers = route.get_routes()
@@ -32,9 +33,11 @@ class Application(tornado.web.Application):
             debug=DEBUG,
             autoescape=None,
             gzip=True,
-            static_path=os.path.join(ROOT, "static")
+            static_path=os.path.join(ROOT, "static"),
+
         )
         tornado.web.Application.__init__(self, handlers, **app_settings)
+
 
 for app_name in APPS:
     __import__("apps.%s" % app_name, fromlist=["handlers"])

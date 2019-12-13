@@ -7,6 +7,7 @@ from settings import MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PWD, MYSQL_DB
 # from string import lower
 import json
 
+
 class FoundHandler(tornado.web.RequestHandler):
     def __init__(self, application, request, **kwargs):
         super(FoundHandler, self).__init__(application, request, **kwargs)
