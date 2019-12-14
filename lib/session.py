@@ -10,22 +10,23 @@ import base64
 
 
 # session_id存储结构
-class SessionData(object):
+class SessionData(dict):
     def __init__(self, session_id, hmac_key):
+        super().__init__()
         self.session_id = session_id
         self.hmac_key = hmac_key
 
 
 #
 class Session(SessionData):
-    def __int__(self, session_manager, request_handler):
+    def __init__(self, session_manager, request_handler):
         self.session_manager = session_manager
         self.request_handler = request_handler
         try:
             current_session = session_manager.get(request_handler)
         except InvalidSessionException:
             current_session = session_manager.get()
-        for key, data in current_session.iteritems():
+        for key, data in current_session.items():
             self[key] = data
         self.session_id = current_session.session_id
         self.hmac_key = current_session.hmac_key
@@ -41,9 +42,10 @@ class SessionManager(object):
         try:
             if store_options['redis_pass']:
                 self.redis = redis.StrictRedis(host=store_options['redis_host'], port=store_options['redis_port'],
-                                               password=store_options['redis_pass'])
+                                               password=store_options['redis_pass'], db=store_options['redis_db'])
             else:
-                self.redis = redis.StrictRedis(host=store_options['redis_host'], port=store_options['redis_port'],)
+                self.redis = redis.StrictRedis(host=store_options['redis_host'], port=store_options['redis_port'],
+                                               db=store_options['redis_db'])
         except Exception as e:
             print(e)
 
@@ -64,22 +66,46 @@ class SessionManager(object):
     def get(self, request_handler=None):
         if request_handler is None:
             session_id = None
-            hmac_id = None
+            hmac_key = None
         else:
             session_id = request_handler.get_secure_cookie("session_id")
             hmac_key = request_handler.get_secure_cookie("verification")
         if session_id is None:
             session_exists = False
             session_id = self._generate_id()
+            hmac_key = self._generate_hmac(session_id)
+        else:
+            session_exists = True
+        check_hmac = self._generate_hmac(session_id)
+        if hmac_key != check_hmac:
+            raise InvalidSessionException()
+        session = SessionData(session_id, hmac_key)
+        if session_exists:
+            session_data = self._fetch(session_id)
+            for key, data in session_data.iteritems():
+                session[key] = data
+        return session
+
+    def set(self, request_handler, session):
+        request_handler.set_secure_cookie("session_id", session.session_id)
+        request_handler.set_secure_cookie("verification", session.hmac_key)
+        session_data = ujson.dumps(dict(session.items()))
+        print("login", session.session_id, session_data)
+        self.redis.setex(session.session_id, self.session_timeout, session_data)
 
     # sha256加密session_id
     def _generate_id(self):
-        new_id = hashlib.sha256(self.secret + str(uuid.uuid4()))
+        new_id = hashlib.sha256((self.secret + str(uuid.uuid4())).encode("utf-8"))
         return new_id.hexdigest()
 
     # hmac加密
     def _generate_hmac(self, session_id):
-        return hmac.new(session_id, self.secret, hashlib.sha256).hexdigest()
+        # print("session_id", type(session_id))
+        # print("self.secret", type(self.secret))
+        if type(session_id) == str:
+            #print(1111111)
+            session_id = bytes(session_id.encode('utf-8'))
+        return hmac.new(session_id, self.secret.encode("utf-8"), hashlib.sha256).hexdigest()
 
 
 # session报错

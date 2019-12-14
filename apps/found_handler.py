@@ -6,11 +6,13 @@ import pymysql
 from settings import MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PWD, MYSQL_DB
 # from string import lower
 import json
+from lib import session
 
 
 class FoundHandler(tornado.web.RequestHandler):
-    def __init__(self, application, request, **kwargs):
+    def __init__(self, application, request, *args, **kwargs):
         super(FoundHandler, self).__init__(application, request, **kwargs)
+        self.session = session.Session(self.application.session_manager, self)
 
     @property
     def redis(self):
@@ -48,3 +50,7 @@ class FoundHandler(tornado.web.RequestHandler):
 
     def compute_etag(self):
         return None
+
+    def get_current_user(self):
+        print("session", self.session)
+        return self.session.get("user_name")

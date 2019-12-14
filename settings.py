@@ -28,6 +28,12 @@ if platform.node() in PRD_SERVER:
     MYSQL_USER = "root"
     MYSQL_PWD = "d52695122b70f465"
 
+    # session配置
+    SESSION_TIMEOUT = 60
+    SESSION_REDIS_HOST = "127.0.0.1"
+    SESSION_REDIS_PORT = "6379"
+    SESSION_REDIS_DB = 1
+
 else:
     #*************开发/测试环境配置*************
     DEBUG = True
@@ -44,4 +50,11 @@ else:
     MYSQL_DB = "test"
     MYSQL_USER = "root"
     MYSQL_PWD = "123456"
+
+    # session配置
+    SESSION_TIMEOUT = 60
+    SESSION_REDIS_HOST = "127.0.0.1"
+    SESSION_REDIS_PORT = "6379"
+    SESSION_REDIS_DB = 1
+
 

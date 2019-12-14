@@ -14,8 +14,10 @@ import tornado.ioloop
 import tornado.web
 
 import redis
-from settings import REDIS_HOST, REDIS_PORT, REDIS_DB, DEBUG, APPS, LOGGING_LEVEL, API_PORT
+from settings import *
+from lib import session
 from lib.routes import route
+from lib.utils import generate_cookie_secret, generate_session_secret
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
 path = lambda *a: os.path.join(*a)
@@ -34,9 +36,20 @@ class Application(tornado.web.Application):
             autoescape=None,
             gzip=True,
             static_path=os.path.join(ROOT, "static"),
-
+            # 缓存相关
+            session_timeout=SESSION_TIMEOUT,
+            cookie_secret=generate_cookie_secret(),
+            session_secret=generate_session_secret(),
+            store_options={
+                'redis_host': SESSION_REDIS_HOST,
+                'redis_port': SESSION_REDIS_PORT,
+                'redis_pass': "",
+                'redis_db': SESSION_REDIS_DB,
+            }
         )
         tornado.web.Application.__init__(self, handlers, **app_settings)
+        self.session_manager = session.SessionManager(app_settings["session_secret"], app_settings["store_options"],
+                                                      app_settings["session_timeout"])
 
 
 for app_name in APPS:
@@ -60,6 +73,7 @@ def main():
     except KeyboardInterrupt:
         logging.info("API Server stoped")
         sys.exit(0)
+
 
 if __name__ == "__main__":
     main()
