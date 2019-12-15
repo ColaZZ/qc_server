@@ -52,5 +52,5 @@ class FoundHandler(tornado.web.RequestHandler):
         return None
 
     def get_current_user(self):
-        print("session", self.session)
+        # print("session", self.session)
         return self.session.get("user_name")

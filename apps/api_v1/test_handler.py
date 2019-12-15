@@ -20,9 +20,8 @@ class TestMainHandler(FoundHandler):
     @login_required
     def get(self):
         username = self.get_current_user()
-        print('start...')
-        print(username)
-        print(self.session['xxx'])
+        # print('start...')
+        # print(username)
         if username is None:
             self.write_json(username)
         else:

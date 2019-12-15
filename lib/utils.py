@@ -10,7 +10,7 @@ import hashlib
 
 def login_required(f):
     def _wrapper(self, *args, **kwargs):
-        print("current_user", self.get_current_user())
+        # print("current_user", self.get_current_user())
         logged = self.get_current_user()
         if logged is None:
             # 无session，返回登录 etc
@@ -32,3 +32,12 @@ def generate_session_secret(length=64, allowed_chars=None, secret_key=None):
     session_secret = base64.b64encode(uuid.uuid1().bytes + uuid.uuid1().bytes + uuid.uuid1().bytes)
     session_secret = session_secret.decode("utf-8")
     return session_secret
+
+
+# bytes转str
+def to_str(bytes_or_str):
+    if isinstance(bytes_or_str, bytes):
+        value = bytes_or_str.decode('utf-8')
+    else:
+        value = bytes_or_str
+    return value    #Instance of str

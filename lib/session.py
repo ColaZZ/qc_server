@@ -6,7 +6,8 @@ import hmac
 import ujson
 import hashlib
 import redis
-import base64
+
+from lib.utils import to_str
 
 
 # session_id存储结构
@@ -68,8 +69,8 @@ class SessionManager(object):
             session_id = None
             hmac_key = None
         else:
-            session_id = request_handler.get_secure_cookie("session_id")
-            hmac_key = request_handler.get_secure_cookie("verification")
+            session_id = to_str(request_handler.get_secure_cookie("session_id"))
+            hmac_key = to_str(request_handler.get_secure_cookie("verification"))
         if session_id is None:
             session_exists = False
             session_id = self._generate_id()
@@ -82,15 +83,16 @@ class SessionManager(object):
         session = SessionData(session_id, hmac_key)
         if session_exists:
             session_data = self._fetch(session_id)
-            for key, data in session_data.iteritems():
+            for key, data in session_data.items():
                 session[key] = data
         return session
 
     def set(self, request_handler, session):
         request_handler.set_secure_cookie("session_id", session.session_id)
         request_handler.set_secure_cookie("verification", session.hmac_key)
+        # print("set_session", type(session.session_id), type(session.hmac_key))
         session_data = ujson.dumps(dict(session.items()))
-        print("login", session.session_id, session_data)
+        # print("login", session.session_id, session_data)
         self.redis.setex(session.session_id, self.session_timeout, session_data)
 
     # sha256加密session_id

@@ -29,7 +29,7 @@ if platform.node() in PRD_SERVER:
     MYSQL_PWD = "d52695122b70f465"
 
     # session配置
-    SESSION_TIMEOUT = 60
+    SESSION_TIMEOUT = 600
     SESSION_REDIS_HOST = "127.0.0.1"
     SESSION_REDIS_PORT = "6379"
     SESSION_REDIS_DB = 1
@@ -52,7 +52,7 @@ else:
     MYSQL_PWD = "123456"
 
     # session配置
-    SESSION_TIMEOUT = 60
+    SESSION_TIMEOUT = 600
     SESSION_REDIS_HOST = "127.0.0.1"
     SESSION_REDIS_PORT = "6379"
     SESSION_REDIS_DB = 1
