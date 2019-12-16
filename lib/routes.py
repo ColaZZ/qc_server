@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import tornado.web
+
+
 class route(object):
     _routes = []
 
@@ -18,6 +20,7 @@ class route(object):
     @classmethod
     def get_routes(cls):
         return cls._routes
+
 
 def route_redirect(from_, to, name=None):
     route._routes.append(tornado.web.url(from_, tornado.web.RedirectHandler, dict(url=to), name=name))

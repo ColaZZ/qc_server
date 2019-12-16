@@ -17,15 +17,15 @@ class TestHandler(FoundHandler):
 
 @route('/test_main')
 class TestMainHandler(FoundHandler):
-    @login_required
+    # @login_required
     def get(self):
-        username = self.get_current_user()
+        # username = self.get_current_user()
         # print('start...')
         # print(username)
-        if username is None:
-            self.write_json(username)
-        else:
-            self.write_json("what's up, " + username + "?")
+        # open_id = "121212"
+        data = {}
+        self.write_json(data)
+
 
 
 @route('/test_login')

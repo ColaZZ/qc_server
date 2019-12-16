@@ -54,3 +54,10 @@ class FoundHandler(tornado.web.RequestHandler):
     def get_current_user(self):
         # print("session", self.session)
         return self.session.get("user_name")
+
+    # 保存用户信息    open_id:{"user_id": xxx, "name": ssss}
+    def save_user_info(self, open_id=None, value=None):
+        return self.redis.hmset(open_id, value)
+
+
+

@@ -7,6 +7,8 @@ import time
 import random
 import hashlib
 
+from lib.constant import APPID, APPSECRET
+
 
 def login_required(f):
     def _wrapper(self, *args, **kwargs):
@@ -41,3 +43,12 @@ def to_str(bytes_or_str):
     else:
         value = bytes_or_str
     return value    #Instance of str
+
+
+# 获取用户身份标识 from wechat
+def get_user_info(js_code):
+    req_params = {
+        "appid": APPID,         # 小程序ID
+        "secret": APPSECRET,     # 小程序secret_key
+
+    }

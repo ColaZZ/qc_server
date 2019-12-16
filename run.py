@@ -15,8 +15,8 @@ import tornado.web
 
 import redis
 from settings import *
-from lib import session
 from lib.routes import route
+import lib.session as session
 from lib.utils import generate_cookie_secret, generate_session_secret
 
 ROOT = os.path.abspath(os.path.dirname(__file__))
