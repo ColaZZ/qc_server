@@ -3,7 +3,7 @@
 
 import uuid
 import hmac
-import ujson
+import json
 import hashlib
 import redis
 
@@ -35,6 +35,9 @@ class Session(SessionData):
     def save(self):
         self.session_manager.set(self.request_handler, self)
 
+    # def zsave(self):
+    #     self.session_manager.zadd(self.request_handler, self)
+
 
 class SessionManager(object):
     def __init__(self, secret, store_options, session_timeout):
@@ -56,7 +59,7 @@ class SessionManager(object):
             session_data = raw_data = self.redis.get(session_id)
             if raw_data is not None:
                 self.redis.setex(session_id, self.session_timeout, raw_data)
-                session_data = ujson.loads(raw_data)
+                session_data = json.loads(raw_data)
             if type(session_data) == type({}):
                 return session_data
             else:
@@ -91,13 +94,22 @@ class SessionManager(object):
         request_handler.set_secure_cookie("session_id", session.session_id)
         request_handler.set_secure_cookie("verification", session.hmac_key)
         # print("set_session", type(session.session_id), type(session.hmac_key))
-        session_data = ujson.dumps(dict(session.items()))
+        session_data = json.dumps(dict(session.items()))
         # print("login", session.session_id, session_data)
         self.redis.setex(session.session_id, self.session_timeout, session_data)
+
+    # def zadd(self, request_handler, session):
+    #     request_handler.set_secure_cookie("session_id", session.session_id)
+    #     request_handler.set_secure_cookie("verification", session.hmac_key)
+    #     # print("set_session", type(session.session_id), type(session.hmac_key))
+    #     session_data = json.dumps(dict(session.items()))
+    #     # print("login", session.session_id, session_data)
+    #     self.redis.zadd(session.session_id, session_data)
 
     # sha256加密session_id
     def _generate_id(self):
         new_id = hashlib.sha256((self.secret + str(uuid.uuid4())).encode("utf-8"))
+        # new_id = hashlib.sha256((self.secret).encode("utf-8"))
         return new_id.hexdigest()
 
     # hmac加密

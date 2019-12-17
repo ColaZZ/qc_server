@@ -19,6 +19,10 @@ class FoundHandler(tornado.web.RequestHandler):
         return self.application.redis
 
     @property
+    def redis_spare(self):
+        return self.application.redis_spare
+
+    @property
     def cur(self):
         mysql_conn = pymysql.connect(
             host=MYSQL_HOST,

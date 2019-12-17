@@ -29,7 +29,10 @@ class Application(tornado.web.Application):
         handlers = route.get_routes()
         # print(handlers)
         redis_pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)    # redis缓存连接池
+        redis_spare_pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_SPARE)     # redis缓存连接池
         self.redis = redis.Redis(connection_pool=redis_pool)
+        self.redis_spare = redis.Redis(connection_pool=redis_spare_pool)
+
 
         app_settings = dict(
             debug=DEBUG,

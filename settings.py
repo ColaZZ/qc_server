@@ -20,6 +20,7 @@ if platform.node() in PRD_SERVER:
     REDIS_HOST = "127.0.0.1"
     REDIS_PORT = 6379
     REDIS_DB = 0
+    REDIS_DB_SPARE = 2
 
     # mysql服务器
     MYSQL_HOST = "127.0.0.1"
@@ -43,6 +44,7 @@ else:
     REDIS_HOST = "127.0.0.1"
     REDIS_PORT = "6379"
     REDIS_DB = 0
+    REDIS_DB_SPARE = 2
 
     # mysql服务器
     MYSQL_HOST = "127.0.0.1"
