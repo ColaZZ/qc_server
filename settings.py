@@ -25,7 +25,7 @@ if platform.node() in PRD_SERVER:
     # mysql服务器
     MYSQL_HOST = "127.0.0.1"
     MYSQL_PORT = ""
-    MYSQL_DB = "test"
+    MYSQL_DB = "game"
     MYSQL_USER = "root"
     MYSQL_PWD = "d52695122b70f465"
 
@@ -49,7 +49,7 @@ else:
     # mysql服务器
     MYSQL_HOST = "127.0.0.1"
     MYSQL_PORT = 3306
-    MYSQL_DB = "test"
+    MYSQL_DB = "game"
     MYSQL_USER = "root"
     MYSQL_PWD = "123456"
 

@@ -3,18 +3,34 @@
 
 import uuid
 import base64
-import time
-import random
-import hashlib
+# import time
+# import random
+# import hashlib
+import requests
 
 from lib.constant import APPID, APPSECRET
 
 
+# def login_required(f):
+#     def _wrapper(self, *args, **kwargs):
+#         # print("current_user", self.get_current_user())
+#         logged = self.get_current_user()
+#         if logged is None:
+#             # 无session，返回登录 etc
+#             self.write('no login')
+#             self.finish()
+#         else:
+#             ret = f(self, *args, **kwargs)
+#
+#     return _wrapper
+
 def login_required(f):
     def _wrapper(self, *args, **kwargs):
         # print("current_user", self.get_current_user())
-        logged = self.get_current_user()
-        if logged is None:
+        uuid = self.get_argument("uuid", "")
+        session_key = self.get_current_uuid(uuid)
+        if session_key is None:
+            self.write_json({"state": False, "msg": "请重新登录"})
             # 无session，返回登录 etc
             self.write('no login')
             self.finish()
@@ -50,5 +66,10 @@ def get_user_info(js_code):
     req_params = {
         "appid": APPID,         # 小程序ID
         "secret": APPSECRET,     # 小程序secret_key
-
+        "js_code": js_code,
+        "grand_type": "authorization_code",
     }
+
+    req_result = requests.get('https://api.weixin.qq.com/sns/jscode2session',
+                              params=req_params, timeout=3, verify=False)
+    return req_result.json()

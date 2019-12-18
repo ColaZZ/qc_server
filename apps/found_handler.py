@@ -7,6 +7,8 @@ from settings import MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PWD, MYSQL_DB
 # from string import lower
 import json
 from lib import session
+from lib.constant import SESSION_REDIS_EXPIRES
+from lib.utils import to_str
 
 
 class FoundHandler(tornado.web.RequestHandler):
@@ -55,13 +57,75 @@ class FoundHandler(tornado.web.RequestHandler):
     def compute_etag(self):
         return None
 
-    def get_current_user(self):
-        # print("session", self.session)
-        return self.session.get("user_name")
+    # def get_current_user(self):
+    #     # print("session", self.session)
+    #     return self.session.get("user_name")
 
     # 保存用户信息    open_id:{"user_id": xxx, "name": ssss}
-    def save_user_info(self, open_id=None, value=None):
-        return self.redis.hmset(open_id, value)
+    def save_user_info(self, open_id=None, user_uuid=None):
+        cur = self.cur
+        try:
+            sql = "insert into user (open_id, uuid) value(%s, %s) on DUPLICATE KEY UPDATE open_id=%s "
+            result = cur.execute(sql, [open_id, user_uuid, open_id])
+            cur.connection.commit()
+            if result:
+                save = "sucess"
+            else:
+                save = "already"
+        except Exception as e:
+            save = "False"
+            print(e)
+
+        return save
+
+    def save_user_session(self, user_uuid, openid, session_key):
+        user_session_value = {
+            'uuid': user_uuid,
+            'session_key': session_key
+        }
+        user_session_key = 'sx:' + openid
+        with self.redis_spare.pipeline(transaction=False) as pipe:
+            pipe.hmset(user_session_key, user_session_value)
+            pipe.expire(user_session_key, SESSION_REDIS_EXPIRES)
+            pipe.execute()
+
+    def get_current_uuid(self, uuid):
+        # print("session", self.session)
+        user_info_session_key = "sx_info:" + uuid
+        open_id = to_str(self.redis_spare.hget(user_info_session_key, "openid"))
+        if open_id is None:
+            return False
+        user_session_key = 'sx:' + open_id
+        session_key = self.redis_spare.hget(user_session_key, "session_key")
+        return session_key
+
+    # def get_uuid(self, user_session_key):
+    #     return self.redis_spare.hget(user_session_key, "uuid")
+    #
+    # def get_level(self, user_session_key):
+    #     return
+
+    def get_session(self, user_session_key):
+        return self.redis_spare.hmget(user_session_key, "uuid")
+
+    def save_user_info_session(self, user_uuid, openid, level, current_score, target_score, color_num):
+        user_info_session_value = {
+            "openid": openid,
+            "level": level,
+            "current_score": current_score,
+            "target_score": target_score,
+            "color_num": color_num
+        }
+        user_info_session_key = "sx_info:" + user_uuid
+        with self.redis_spare.pipeline(transaction=False) as pipe:
+            pipe.hmset(user_info_session_key, user_info_session_value)
+            pipe.expire(user_uuid, SESSION_REDIS_EXPIRES)
+            pipe.execute()
+
+    def get_user_info_session(self, uuid):
+        user_key = "sx_info:" + uuid
+        return self.redis_spare.hgetall(user_key)
+
 
 
 

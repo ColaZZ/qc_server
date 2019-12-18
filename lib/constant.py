@@ -1,5 +1,12 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-APPID = ""
-APPSECRET = ""
+APPID = "wxae27d409edf75fdb"
+APPSECRET = "44954571e15677b941f077c1be047c65"
+
+USER_SESSION_KEY = "sx:"
+
+SESSION_REDIS_EXPIRES = 7 * 24 * 60 * 60
+
+COLOR_NUM_CONST = 3
+TARGET_SCORE_CONST = 5

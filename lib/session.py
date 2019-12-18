@@ -3,9 +3,10 @@
 
 import uuid
 import hmac
-import json
+# import ujson
 import hashlib
 import redis
+import json
 
 from lib.utils import to_str
 
@@ -34,9 +35,6 @@ class Session(SessionData):
 
     def save(self):
         self.session_manager.set(self.request_handler, self)
-
-    # def zsave(self):
-    #     self.session_manager.zadd(self.request_handler, self)
 
 
 class SessionManager(object):
@@ -98,18 +96,9 @@ class SessionManager(object):
         # print("login", session.session_id, session_data)
         self.redis.setex(session.session_id, self.session_timeout, session_data)
 
-    # def zadd(self, request_handler, session):
-    #     request_handler.set_secure_cookie("session_id", session.session_id)
-    #     request_handler.set_secure_cookie("verification", session.hmac_key)
-    #     # print("set_session", type(session.session_id), type(session.hmac_key))
-    #     session_data = json.dumps(dict(session.items()))
-    #     # print("login", session.session_id, session_data)
-    #     self.redis.zadd(session.session_id, session_data)
-
     # sha256加密session_id
     def _generate_id(self):
         new_id = hashlib.sha256((self.secret + str(uuid.uuid4())).encode("utf-8"))
-        # new_id = hashlib.sha256((self.secret).encode("utf-8"))
         return new_id.hexdigest()
 
     # hmac加密
