@@ -1,3 +1,5 @@
-*.xml
-*.iml
 *.pyc
+*.gitignore
+*.xml
+.idea/tornado_server.iml
+*.iml

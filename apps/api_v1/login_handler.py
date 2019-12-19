@@ -3,6 +3,7 @@
 
 import json
 import uuid
+import time
 
 from apps.found_handler import FoundHandler
 from lib.routes import route
@@ -13,8 +14,11 @@ from lib.constant import USER_SESSION_KEY, COLOR_NUM_CONST, TARGET_SCORE_CONST, 
 @route('/login')
 class LoginHandler(FoundHandler):
     def post(self):
-        req_data = json.loads(self.request.body)
+        print(self.request.body)
+        req_data = json.loads(to_str(self.request.body))
         js_code = req_data.get('code', '')
+        print(js_code)
+        # js_code = "061GyiJJ0rM1G92nTAHJ0KZfJJ0GyiJB"
 
         if not js_code:
             data = {"state": -1, "msg": "上报code有误，请核对"}
@@ -30,7 +34,7 @@ class LoginHandler(FoundHandler):
         user_session_key = USER_SESSION_KEY + open_id
 
         # 缓存中尝试获取uuid
-
+        print(user_session_key)
         # 用来维护用户的登录态（to do 分布式）
         # self.session[user_session_key] = dict(
         #     user_uuid=user_uuid,
@@ -38,10 +42,10 @@ class LoginHandler(FoundHandler):
         #     session_key=session_key,
         # )
         # self.session.save()
-        user_session = to_str(self.get_session(user_session_key))
-        user_uuid = user_session.get("uuid", "")
+        user_session = self.get_session(user_session_key)
+        print(user_session)
 
-        if not user_uuid:
+        if user_session == [None]:
             user_uuid = str(uuid.uuid4())
             self.save_user_session(user_uuid, open_id, session_key)
 
@@ -93,6 +97,7 @@ class LoginHandler(FoundHandler):
             )
 
         else:
+            user_uuid = to_str(user_session.get(b"uuid", ""))
             user_info_session = self.get_user_info_session(user_uuid)
             level = to_str(user_info_session.get("level", 1))
             current_score = to_str(user_info_session.get("current_score", 0))
@@ -101,6 +106,7 @@ class LoginHandler(FoundHandler):
 
         # 微信小程序不能设置cookie，把用户信息存在了headers中
         self.set_header("Authorization", user_uuid)
+
         data = {"uuid": user_uuid,
                 "openid": open_id,
                 "level": level,
@@ -108,6 +114,7 @@ class LoginHandler(FoundHandler):
                 "target_score": target_score,
                 "color_num": color_num
                 }
+        print(data)
         self.write_json(data, msg="success")
 
 

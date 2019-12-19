@@ -32,10 +32,12 @@ class LevelHandler(FoundHandler):
         # 1. 删缓存
         user_info_session_key = "sx_info:" + uuid
         open_id = to_str(self.redis_spare.hget(user_info_session_key, "open_id"))
+        name = to_str(self.redis_spare.hget(user_info_session_key, "name"))
         self.redis_spare.delete(user_info_session_key)
 
         # 2.更新数据库
-        sql = "insert into user_level ('level', 'next_level','current_score') values(%s. %s)"
+        score = int(score)
+        sql = "insert into user_level (level, next_level,current_score) values(%s, %s, %s)"
         cur.execute(sql, [level, next_level, score])
         cur.connection.commit()
 
@@ -70,6 +72,9 @@ class LevelHandler(FoundHandler):
             target_score=next_target_score,
             color_num=next_color_num
         )
+        # 存入排行榜
+        self.redis_spare.zadd("score", {name: score})
+
         data = {
             "next_level": next_level,
             "next_target_score": next_target_score,

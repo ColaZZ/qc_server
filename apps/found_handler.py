@@ -3,6 +3,8 @@
 
 import tornado.web
 import pymysql
+import time
+
 from settings import MYSQL_HOST, MYSQL_PORT, MYSQL_USER, MYSQL_PWD, MYSQL_DB
 # from string import lower
 import json
@@ -106,7 +108,7 @@ class FoundHandler(tornado.web.RequestHandler):
     #     return
 
     def get_session(self, user_session_key):
-        return self.redis_spare.hmget(user_session_key, "uuid")
+        return self.redis_spare.hgetall(user_session_key)
 
     def save_user_info_session(self, user_uuid, openid, level, current_score, target_score, color_num):
         user_info_session_value = {
@@ -117,6 +119,7 @@ class FoundHandler(tornado.web.RequestHandler):
             "color_num": color_num
         }
         user_info_session_key = "sx_info:" + user_uuid
+        print(user_info_session_value)
         with self.redis_spare.pipeline(transaction=False) as pipe:
             pipe.hmset(user_info_session_key, user_info_session_value)
             pipe.expire(user_uuid, SESSION_REDIS_EXPIRES)
@@ -125,6 +128,10 @@ class FoundHandler(tornado.web.RequestHandler):
     def get_user_info_session(self, uuid):
         user_key = "sx_info:" + uuid
         return self.redis_spare.hgetall(user_key)
+
+    # # 记录登陆时间,ip
+    # def set_login_info(self):
+    #     sql = "inset into admin_user (openid, login_time"
 
 
 
