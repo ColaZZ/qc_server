@@ -1,0 +1,22 @@
+{
+    "IsDebug": false,
+    "HttpSerever": "",
+    "SocketServer": "wss://nn.xxtkfp.com",
+    "SocketPort": "8200",
+    "ProtoFile": "msg_proto",
+    "adArrImage": [
+        {
+            "id": "kjrgLkXAR5ufvyEQCYjaXA==",
+            "url": "https://mmocgame.qpic.cn/wechatgame/iav3TTrknKd8w9iawCYZyv7l3wv8HHOZiasMpAI1JBA9SZcuU57YA6rZPkB0IDjvicfg/0"
+        },
+        {
+            "id": "sdGXPXciSki0150FidrdTA==",
+            "url": "https://mmocgame.qpic.cn/wechatgame/iav3TTrknKdibCukjKUZtpgTRQ6oeyc0Daia5hQgpHdevBluI2HjwPNdDzIAhxBjcJa/0"
+        },
+        {
+            "id": "ewrOcQvpRmC1cc3zEcYqjg==",
+            "url": "https://mmocgame.qpic.cn/wechatgame/iav3TTrknKd8Bh1oLxeibB1kv7kpYYd12eBGuNbibRwNt5MhsgUkVQqswG2Of1vuncM/0"
+        }
+    ],
+    "RES_URL": "https://yx.zhiranw.com/static/"
+}

@@ -1,0 +1,24 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
+# APPID = "wxae27d409edf75fdb" # 赵ID
+APPID = "wx45affcf6705592e3" # 公司ID
+# APPID = "wx72aab3e84690346c" # 公司个人ID
+
+
+# APPSECRET = "44954571e15677b941f077c1be047c65"
+APPSECRET = "ec757f8b2edf2fe8cec4aae3311a730e"
+#APPSECRET = "a1c31383600f9423e777362127b99fa4"
+
+USER_SESSION_KEY = "sx:"
+
+SESSION_REDIS_EXPIRES = 7 * 24 * 60 * 60
+
+COLOR_NUM_CONST = 3
+TARGET_SCORE_CONST = 1000
+
+COLORS = [0, 1, 2, 3, 4, 5, 6, 7]
+
+SECRET_KEY = "ZGGA#Mp4yL4w5CDu"
+
+JWT_EXPIRE = 7*24*3600

@@ -1,5 +1,2 @@
-*.pyc
-*.gitignore
-*.xml
-.idea/tornado_server.iml
-*.iml
+.idea/
+__pycache__/

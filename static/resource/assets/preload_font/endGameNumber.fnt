@@ -1,0 +1,11 @@
+{"file":"endGameNumber.png","frames":{
+"6":{"x":1,"y":84,"w":75,"h":81,"offX":0,"offY":0,"sourceW":75,"sourceH":81},
+"7":{"x":80,"y":1,"w":77,"h":81,"offX":0,"offY":0,"sourceW":77,"sourceH":81},
+"8":{"x":78,"y":84,"w":74,"h":81,"offX":0,"offY":0,"sourceW":74,"sourceH":81},
+"9":{"x":159,"y":83,"w":77,"h":80,"offX":0,"offY":0,"sourceW":77,"sourceH":80},
+"0":{"x":159,"y":1,"w":77,"h":80,"offX":0,"offY":0,"sourceW":77,"sourceH":80},
+"1":{"x":229,"y":165,"w":25,"h":81,"offX":0,"offY":0,"sourceW":25,"sourceH":81},
+"2":{"x":76,"y":167,"w":72,"h":80,"offX":0,"offY":0,"sourceW":72,"sourceH":80},
+"3":{"x":1,"y":167,"w":73,"h":81,"offX":0,"offY":0,"sourceW":73,"sourceH":81},
+"4":{"x":1,"y":1,"w":77,"h":81,"offX":0,"offY":0,"sourceW":77,"sourceH":81},
+"5":{"x":154,"y":165,"w":73,"h":81,"offX":0,"offY":0,"sourceW":73,"sourceH":81}}}
