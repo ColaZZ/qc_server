@@ -176,6 +176,7 @@ def import_robot_config():
         }
     Config.robot_config = robot_dict
 
+
 def import_challenge_config():
     # path = r"/home/web/tornado_server/game_config/challenge_config.xlsx"
     path = r"/mnt/d/tornado_server/game_config/challenge_config.xlsx"
@@ -197,28 +198,43 @@ def import_challenge_config():
         score = value[6]
         step = value[7]
         sec = value[8]
+        star3 = str(value[9])
+        star2 = str(value[10])
+        star1 = str(value[11])
 
         if level:
             challenge_dict[level] = {}
-        if red:
-            challenge_dict[level]["red"] = red
-        if blue:
-            challenge_dict[level]["blue"] = blue
-        if green:
-            challenge_dict[level]["green"] = green
-        if yellow:
-            challenge_dict[level]["yellow"] = yellow
-        if biolet:
-            challenge_dict[level]["biolet"] = biolet
-        if score:
-            challenge_dict[level]["score"] = score
-        if step:
-            challenge_dict[level]["step"] = step
-        if sec:
-            challenge_dict[level]["sec"] = sec
+        # if red:
+        #     challenge_dict[level]["red"] = red
+        # if blue:
+        #     challenge_dict[level]["blue"] = blue
+        # if green:
+        #     challenge_dict[level]["green"] = green
+        # if yellow:
+        #     challenge_dict[level]["yellow"] = yellow
+        # if biolet:
+        #     challenge_dict[level]["biolet"] = biolet
+        # if score:
+        #     challenge_dict[level]["score"] = score
+        # if step:
+        #     challenge_dict[level]["step"] = step
+        # if sec:
+        #     challenge_dict[level]["sec"] = sec
+
+        challenge_dict[level]["red"] = red
+        challenge_dict[level]["blue"] = blue
+        challenge_dict[level]["green"] = green
+        challenge_dict[level]["yellow"] = yellow
+        challenge_dict[level]["biolet"] = biolet
+        challenge_dict[level]["score"] = score
+        challenge_dict[level]["step"] = step
+        challenge_dict[level]["sec"] = sec
+        challenge_dict[level]["star3"] = star3
+        challenge_dict[level]["star2"] = star2
+        challenge_dict[level]["star1"] = star1
 
     Config.challenge_config = challenge_dict
 
 
 if __name__ == "__main__":
-    import_challenge_config()
+    import_robot_config()

@@ -10,9 +10,8 @@ from lib.constant import COLORS
 # 随机生成颜色阵列
 def random_color_array(level, color_num):
     # 随机颜色种类
-    # print(COLORS[:5], color_num)
     if level <= 50:
-        random_list = random.sample(COLORS[:8], color_num)
+        random_list = random.sample(COLORS[:5], color_num)
     else:
         random_list = random.sample(COLORS, color_num)
     test = [random.choice(random_list) for _ in range(100)]

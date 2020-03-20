@@ -7,8 +7,6 @@ import time
 # import chardet
 import json
 
-
-
 import jwt
 
 from apps.found_handler_v2 import RedisHandler
@@ -25,33 +23,33 @@ from apps.models.config import Game_Config, Config
 @route('/login')
 class LoginHandler(RedisHandler):
     async def post(self):
-        # req_data = json.loads(to_str(self.request.body))
-        # js_code = req_data.get("code", "")
-        # sceneId = req_data.get("sceneId", "")
-        # query = req_data.get("query", "")
+        req_data = json.loads(to_str(self.request.body))
+        js_code = req_data.get("code", "")
+        sceneId = req_data.get("sceneId", "")
+        query = req_data.get("query", "")
 
-        # if type(sceneId) not in [str, int]:
-        #     env_code = 0
-        # else:
-        #     env_code = int(sceneId)
-        #
-        # from_id = ""
-        # if query:
-        #     from_keys = list(query.keys())
-        #     if from_keys:
-        #         from_id = from_keys[0]
-        #         from_id = encode_tuuid(from_id)
+        if type(sceneId) not in [str, int]:
+            env_code = 0
+        else:
+            env_code = int(sceneId)
 
-        js_code = self.get_argument("code", "")
-        env_code = int(self.get_argument("sceneId", "") or 0)
-        from_id = str(self.get_argument("from_id", "") or 0)
+        from_id = ""
+        if query:
+            from_keys = list(query.keys())
+            if from_keys:
+                from_id = from_keys[0]
+                from_id = encode_tuuid(from_id)
 
-        # if not js_code:
-        #     return self.write_json(status=-1, msg="上报code有误，请核对")
+        # js_code = self.get_argument("code", "")
+        # env_code = int(self.get_argument("sceneId", "") or 0)
+        # from_id = str(self.get_argument("from_id", "") or 0)
+
+        if not js_code:
+            return self.write_json(status=-1, msg="上报code有误，请核对")
 
         # 1.获取用户信息
-        # user_info = get_user_info(js_code)
-        user_info = {"openid": "zzz", "session_key": "ccc"}
+        user_info = get_user_info(js_code)
+        # user_info = {"openid": "sss", "session_key": "aaa"}
         open_id = user_info.get("openid", "")
 
         if not open_id:
@@ -173,9 +171,10 @@ class LoginHandler(RedisHandler):
                 new_user = 0
 
                 # 闯关模式
-                user_challenge = await self.application.objects.get(User_Challenge, uuid=uuid)
+                user_challenge = await self.application.objects.get(User_Challenge, uuid=user_uuid)
                 challenge_info = user_challenge.challenge_info
-                challenge_info_json = json.dumps(challenge_info)
+                challenge_info_json = json.dumps(to_str(challenge_info))
+
 
             # 3.1.2 未注册过
             # TODO 新用户初始化
@@ -248,7 +247,7 @@ class LoginHandler(RedisHandler):
                         pass
 
                 # 初始化闯关模式
-                challenge_info = {"1":0}
+                challenge_info = {"1": 0}
                 challenge_info_json = json.dumps(challenge_info)
                 await self.application.objects.create(User_Challenge, uuid=user_uuid, challenge_info=challenge_info_json)
 
@@ -480,7 +479,7 @@ class PersonalInfoHandler(RedisHandler):
         # avatar = req_data.get("avatar", "")
         # print("name", name, type(name))
 
-        if not name or not avatar:
+        if not name and not avatar:
             return self.write_json(status=-1, msg="参数错误")
 
         uuid = self.current_user.uuid
