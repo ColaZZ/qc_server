@@ -71,7 +71,8 @@ class ChallengeNextHandler(RedisHandler):
         challenge_info[level] = star
         if int(level) < 120:
             next_level = int(level) + 1
-            challenge_info[next_level] = 0
+            if challenge_info.get(str(next_level), 0) == 0:
+                challenge_info[next_level] = 0
         else:
             next_level = level
 

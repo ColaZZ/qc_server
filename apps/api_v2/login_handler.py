@@ -141,8 +141,8 @@ class LoginHandler(RedisHandler):
 
                     for i in range(1, 6):
                         user_mall = await self.application.objects.get(User_Mall, uuid=user_uuid, action_id=i)
-                        if i == 1:
-                            user_mall.daily_status = 0
+                        # if i == 1:
+                        user_mall.daily_status = 0
                         if user_mall.status == 2:
                             user_mall.status = 0
                             await self.application.objects.update(user_mall)
@@ -171,9 +171,15 @@ class LoginHandler(RedisHandler):
                 new_user = 0
 
                 # 闯关模式
-                user_challenge = await self.application.objects.get(User_Challenge, uuid=user_uuid)
-                challenge_info = user_challenge.challenge_info
-                challenge_info_json = json.dumps(to_str(challenge_info))
+                try:
+                    user_challenge = await self.application.objects.get(User_Challenge, uuid=user_uuid)
+                    challenge_info = user_challenge.challenge_info
+                    challenge_info_json = json.dumps(to_str(challenge_info))
+                except User_Challenge.DoesNotExist as e:
+                    challenge_info = {"1": 0}
+                    challenge_info_json = json.dumps(challenge_info)
+                    await self.application.objects.create(User_Challenge, uuid=user_uuid,
+                                                          challenge_info=challenge_info_json)
 
 
             # 3.1.2 未注册过
@@ -378,8 +384,8 @@ class LoginHandler(RedisHandler):
 
                 for i in range(1, 6):
                     user_mall = await self.application.objects.get(User_Mall, uuid=user_uuid, action_id=i)
-                    if i == 1:
-                        user_mall.daily_status = 0
+                    # if i == 1:
+                    user_mall.daily_status = 0
                     if user_mall.status == 2:
                         user_mall.status = 0
                         await self.application.objects.update(user_mall)

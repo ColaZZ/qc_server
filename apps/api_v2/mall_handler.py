@@ -51,22 +51,27 @@ class MallActiveHandler(RedisHandler):
             elif user_mall.status == 0:
                 return self.write_json(status=-4, msg="抱歉,条件未达到,还不能领取")
 
-            # user_mall.status = 0
-            # if int(action_id) != 2:
-            #     user_mall.status = 2
-            user_mall.status = 2
+            user_mall.status = 0
+            if int(action_id) != 2:
+                user_mall.status = 2
 
-            await self.application.objects.update(user_mall)
+            # user_mall.status = 2
+
             user_coins = await self.application.objects.get(User_Coins, uuid=uuid)
             if int(action_id) != 1:
                 if int(action_id) == 2:
-                    user_coins.coins += 20
+                    if not user_mall.daily_status:
+                        user_coins.coins += 10
+                    else:
+                        user_coins.coins += 5
                 else:
                     user_coins.coins += 10
                 await self.application.objects.update(user_coins)
 
                 user_info_session_key = "sx_info:" + uuid
                 self.redis_spare.hset(user_info_session_key, "coins", user_coins.coins)
+            user_mall.daily_status = 1
+            await self.application.objects.update(user_mall)
 
             user_mall_all = await self.application.objects.execute(
                 User_Mall.select(User_Mall.action_id, User_Mall.action_name, User_Mall.status)
