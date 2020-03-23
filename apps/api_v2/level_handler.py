@@ -21,7 +21,6 @@ class LevelHandler(RedisHandler):
 
         if not score or not level:
             return self.write_json(status=-1, msg="请稍后重试")
-
         uuid = self.current_user.uuid
 
         # 先删缓存再更新数据库

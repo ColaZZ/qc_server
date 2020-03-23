@@ -37,17 +37,19 @@ def import_game_config():
         rows.append(row)
 
     for row in rows[1:]:
-        value = [v.value for v in row[::-1]]
-        value = tuple(value)
-        config.append(value)
+        value = [int(v.value) for v in row[::-1] if v.value != None and v.value != ' ']
 
-    sql = "update game_config set `direct`=%s, `color_num`=%s, `target_score`=%s where `level`=%s"
-    try:
-        cur.executemany(sql, config)
+        if value != []:
+            value = list(value)
+            # config.append(value)
+        # if value[3] == 52:
+        # print(config)
+        sql = "update game_config set `direct`=%s, `color_num`=%s, `target_score`=%s where `level`=%s"
+        print(value, len(value))
+        cur.execute(sql, value)
         cur.connection.commit()
 
-    except:
-        conn.rollback()
+
     conn.close()
 
 

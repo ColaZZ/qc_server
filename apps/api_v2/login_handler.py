@@ -57,6 +57,7 @@ class LoginHandler(RedisHandler):
 
         # 2.获取session_key
         session_key = user_info.get("session_key", "")
+        unionid = user_info.get("unionid", "")
         # user_session_key = USER_SESSION_KEY + open_id
         user_session = self.get_session(open_id)
 
@@ -467,7 +468,8 @@ class LoginHandler(RedisHandler):
                 "extra_sign": extra_sign,
                 "history_score": history_score,
                 "robot": robot_user,
-                "new_user": new_user,                # 是否为新用户
+                "new_user": new_user,                   # 是否为新用户
+                "unionid": unionid,                     # unionid
                 }
         self.write_json(data, msg="success")
 
