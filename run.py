@@ -36,6 +36,8 @@ class Application(tornado.web.Application):
         self.redis = redis.StrictRedis(connection_pool=redis_pool, decode_responses=True)
         self.redis_spare = redis.StrictRedis(connection_pool=redis_spare_pool, decode_responses=True)
 
+        print(REDIS_HOST, REDIS_PORT, REDIS_DB_SPARE)
+
         app_settings = dict(
             debug=DEBUG,
             autoescape=None,
