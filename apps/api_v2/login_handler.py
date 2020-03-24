@@ -23,33 +23,33 @@ from apps.models.config import Game_Config, Config
 @route('/login')
 class LoginHandler(RedisHandler):
     async def post(self):
-        req_data = json.loads(to_str(self.request.body))
-        js_code = req_data.get("code", "")
-        sceneId = req_data.get("sceneId", "")
-        query = req_data.get("query", "")
+        # req_data = json.loads(to_str(self.request.body))
+        # js_code = req_data.get("code", "")
+        # sceneId = req_data.get("sceneId", "")
+        # query = req_data.get("query", "")
+        #
+        # if type(sceneId) not in [str, int]:
+        #     env_code = 0
+        # else:
+        #     env_code = int(sceneId)
+        #
+        # from_id = ""
+        # if query:
+        #     from_keys = list(query.keys())
+        #     if from_keys:
+        #         from_id = from_keys[0]
+        #         from_id = encode_tuuid(from_id)
 
-        if type(sceneId) not in [str, int]:
-            env_code = 0
-        else:
-            env_code = int(sceneId)
-
-        from_id = ""
-        if query:
-            from_keys = list(query.keys())
-            if from_keys:
-                from_id = from_keys[0]
-                from_id = encode_tuuid(from_id)
-
-        # js_code = self.get_argument("code", "")
-        # env_code = int(self.get_argument("sceneId", "") or 0)
-        # from_id = str(self.get_argument("from_id", "") or 0)
+        js_code = self.get_argument("code", "")
+        env_code = int(self.get_argument("sceneId", "") or 0)
+        from_id = str(self.get_argument("from_id", "") or 0)
 
         if not js_code:
             return self.write_json(status=-1, msg="上报code有误，请核对")
 
         # 1.获取用户信息
-        user_info = get_user_info(js_code)
-        # user_info = {"openid": "sss", "session_key": "aaa"}
+        # user_info = get_user_info(js_code)
+        user_info = {"openid": "sss", "session_key": "aaa"}
         open_id = user_info.get("openid", "")
 
         if not open_id:
