@@ -408,7 +408,8 @@ class LoginHandler(RedisHandler):
             # self.redis_spare.hset(user_info_session_key, str(robot_user))
             robot_user_dict["robot_list"] = robot_last
             robot_user_dict["restart"] = 0
-            robot_user_dict.pop("id")
+            if "id" in robot_user_dict:
+                robot_user_dict.pop("id")
             self.redis_spare.hmset(user_robot_key, robot_user_dict)
 
         robot_user = {
