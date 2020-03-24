@@ -41,8 +41,8 @@ def import_config(path):
 def import_default_config():
     default_array = []
     level_dict = {}
-    # path = r"/home/web/tornado_server/game_config/default_config.xlsx"
-    path = r"/mnt/d/tornado_server/game_config/default_config.xlsx"
+    path = r"/home/web/tornado_server/game_config/default_config.xlsx"
+    # path = r"/mnt/d/tornado_server/game_config/default_config.xlsx"
     # path = r"/Users/zlinxx/tornado_server/game_config/default_config.xlsx"
 
     # workbook = openpyxl.load_workbook()
@@ -74,8 +74,8 @@ def import_default_config():
 
 # 上传抽奖表
 def import_loto_config():
-    # path = r"/home/web/tornado_server/game_config/loto_config.xlsx"
-    path = r"/mnt/d/tornado_server/game_config/loto_config.xlsx"
+    path = r"/home/web/tornado_server/game_config/loto_config.xlsx"
+    # path = r"/mnt/d/tornado_server/game_config/loto_config.xlsx"
     # path = r"/Users/zlinxx/tornado_server/game_config/loto_config.xlsx"
 
     workbook = openpyxl.load_workbook(path)
@@ -96,8 +96,8 @@ def import_loto_config():
 
 
 def import_sign_config():
-    # path = r"/home/web/tornado_server/game_config/sign_config.xlsx"
-    path = r"/mnt/d/tornado_server/game_config/sign_config.xlsx"
+    path = r"/home/web/tornado_server/game_config/sign_config.xlsx"
+    # path = r"/mnt/d/tornado_server/game_config/sign_config.xlsx"
     # path = r"/Users/zlinxx/tornado_server/game_config/sign_config.xlsx"
     workbook = openpyxl.load_workbook(path)
     sheet = workbook['Sheet1']
@@ -113,8 +113,8 @@ def import_sign_config():
 
 
 def import_sign_award_config():
-    # path = r"/home/web/tornado_server/game_config/sign_award_config.xlsx"
-    path = r"/mnt/d/tornado_server/game_config/sign_award_config.xlsx"
+    path = r"/home/web/tornado_server/game_config/sign_award_config.xlsx"
+    # path = r"/mnt/d/tornado_server/game_config/sign_award_config.xlsx"
     # path = r"/Users/zlinxx/tornado_server/game_config/sign_award_config.xlsx"
     workbook = openpyxl.load_workbook(path)
     sheet = workbook['Sheet1']
@@ -136,8 +136,8 @@ def import_sign_award_config():
 
 
 def import_tool_config():
-    # path = r"/home/web/tornado_server/game_config/tool_config.xlsx"
-    path = r"/mnt/d/tornado_server/game_config/tool_config.xlsx"
+    path = r"/home/web/tornado_server/game_config/tool_config.xlsx"
+    # path = r"/mnt/d/tornado_server/game_config/tool_config.xlsx"
     # path = r"/Users/zlinxx/tornado_server/game_config/tool_config.xlsx"
     workbook = openpyxl.load_workbook(path)
     sheet = workbook['Sheet1']
@@ -158,8 +158,8 @@ def import_tool_config():
 
 
 def import_robot_config():
-    # path = r"/home/web/tornado_server/game_config/robot_config.xlsx"
-    path = r"/mnt/d/tornado_server/game_config/robot_config.xlsx"
+    path = r"/home/web/tornado_server/game_config/robot_config.xlsx"
+    # path = r"/mnt/d/tornado_server/game_config/robot_config.xlsx"
     # path = r"/Users/zlinxx/tornado_server/game_config/robot_config.xlsx"
     workbook = openpyxl.load_workbook(path)
     sheet = workbook['Sheet1']
@@ -178,8 +178,8 @@ def import_robot_config():
 
 
 def import_challenge_config():
-    # path = r"/home/web/tornado_server/game_config/challenge_config.xlsx"
-    path = r"/mnt/d/tornado_server/game_config/challenge_config.xlsx"
+    path = r"/home/web/tornado_server/game_config/challenge_config.xlsx"
+    # path = r"/mnt/d/tornado_server/game_config/challenge_config.xlsx"
     # path = r"/Users/zlinxx/tornado_server/game_config/challenge_config.xlsx"
     workbook = openpyxl.load_workbook(path)
     sheet = workbook['Sheet1']
