@@ -404,6 +404,7 @@ class LoginHandler(RedisHandler):
             next_game_config = await self.application.objects.get(Game_Config, level=int(level) + 1)
             next_target_score = next_game_config.target_score if next_game_config.target_score else target_score
             robot_user_dict, robot_last = random_robot(Config.robot_config, "", int(target_score), int(next_target_score))
+            print(robot_user_dict, robot_last)
             # self.redis_spare.hset(user_info_session_key, str(robot_user))
             robot_user_dict["robot_list"] = robot_last
             robot_user_dict["restart"] = 0
