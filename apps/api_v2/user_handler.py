@@ -90,6 +90,7 @@ class RestartHandler(RedisHandler):
     @authenticated_async
     async def get(self):
         uuid = self.current_user.uuid
+        print(uuid)
         # 1. 删缓存
         user_info_session_key = "sx_info:" + uuid
         # open_id = self.redis_spare.hget(user_info_session_key, "open_id")
