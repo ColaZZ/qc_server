@@ -10,7 +10,7 @@ def authenticated_async(method):
     @functools.wraps(method)
     async def wrapper(self, *args, **kwargs):
         tuuid = self.request.headers.get("uuid", None)
-        # print(tuuid)
+        print(tuuid)
         if tuuid:
             try:
                 tuuid = tuuid.encode("utf-8")
