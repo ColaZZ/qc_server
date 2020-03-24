@@ -96,6 +96,7 @@ class RestartHandler(RedisHandler):
         # open_id = self.redis_spare.hget(user_info_session_key, "open_id")
         name = self.redis_spare.hget(user_info_session_key, "name")
         tools = self.redis_spare.hget(user_info_session_key, "tools")
+        print(type(tools))
         # verified = self.redis_spare.hget(user_info_session_key, "verified")
         # coins = self.redis_spare.hget(user_info_session_key, "coins")
         # print(self.redis_spare.hgetall(user_info_session_key))
