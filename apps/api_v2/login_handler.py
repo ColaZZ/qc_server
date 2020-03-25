@@ -15,9 +15,10 @@ from lib.utils import to_str, get_user_info, random_robot
 from lib.authenticated_async import authenticated_async, encode_tuuid
 from lib.gernerate_colors import random_color_array
 # from apps.models.config import Config
-from lib.constant import USER_SESSION_KEY, COLOR_NUM_CONST, TARGET_SCORE_CONST, SECRET_KEY
+from lib.constant import USER_SESSION_KEY, COLOR_NUM_CONST, TARGET_SCORE_CONST, SECRET_KEY, APPID
 from apps.models.user import User, User_Level, User_Coins, User_Tools, User_Sign, User_Mall, User_Loto, User_Challenge
 from apps.models.config import Game_Config, Config
+from lib.WXBizDataCrypt import WXBizDataCrypt
 
 
 @route('/login')
@@ -27,8 +28,8 @@ class LoginHandler(RedisHandler):
         js_code = req_data.get("code", "")
         sceneId = req_data.get("sceneId", "")
         query = req_data.get("query", "")
-        # encryptedData = req_data.get("encryptedData", "")
-        # iv = req_data.get("iv", "")
+        encryptedData = req_data.get("encryptedData", "")
+        iv = req_data.get("iv", "")
 
         if type(sceneId) not in [str, int]:
             env_code = 0
@@ -60,11 +61,15 @@ class LoginHandler(RedisHandler):
 
         # 2.获取session_key
         session_key = user_info.get("session_key", "")
-        unionid = user_info.get("unionid", "")
         # user_session_key = USER_SESSION_KEY + open_id
         user_session = self.get_session(open_id)
 
-
+        if encryptedData and iv:
+            pc = WXBizDataCrypt(APPID, session_key)
+            WX_data = pc.decrypt(encryptedData, iv)
+            unionId = WX_data.get("unionId", "")
+        else:
+            unionId = ""
 
         today = time.strftime("%Y-%m-%d", time.localtime())
         day_time = int(time.mktime(datetime.date.today().timetuple()))
@@ -476,7 +481,7 @@ class LoginHandler(RedisHandler):
                 "history_score": history_score,
                 "robot": robot_user,
                 "new_user": new_user,                   # 是否为新用户
-                "unionid": unionid,                     # unionid
+                "unionid": unionId,                     # unionid
                 }
         self.write_json(data, msg="success")
 
