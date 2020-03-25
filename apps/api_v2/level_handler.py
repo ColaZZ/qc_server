@@ -37,9 +37,9 @@ class LevelHandler(RedisHandler):
 
         # TODO 后端判断分数是否达标
         # v1 从redis缓存中获取target_score
-        target_score = int(self.redis_spare.hget(user_info_session_key, "target_score"))
-        if score < target_score:
-            return self.write_json(status=-2, msg="分数未达到,请重试")
+        # target_score = int(self.redis_spare.hget(user_info_session_key, "target_score"))
+        # if score < target_score:
+        #     return self.write_json(status=-2, msg="分数未达到,请重试")
 
         # 2. 更新数据库
         next_level = level + 1
