@@ -27,6 +27,8 @@ class LoginHandler(RedisHandler):
         js_code = req_data.get("code", "")
         sceneId = req_data.get("sceneId", "")
         query = req_data.get("query", "")
+        # encryptedData = req_data.get("encryptedData", "")
+        # iv = req_data.get("iv", "")
 
         if type(sceneId) not in [str, int]:
             env_code = 0
@@ -44,6 +46,7 @@ class LoginHandler(RedisHandler):
         # env_code = int(self.get_argument("sceneId", "") or 0)
         # from_id = str(self.get_argument("from_id", "") or 0)
 
+        # 三个参数缺一不可
         if not js_code:
             return self.write_json(status=-1, msg="上报code有误，请核对")
 
@@ -60,6 +63,8 @@ class LoginHandler(RedisHandler):
         unionid = user_info.get("unionid", "")
         # user_session_key = USER_SESSION_KEY + open_id
         user_session = self.get_session(open_id)
+
+
 
         today = time.strftime("%Y-%m-%d", time.localtime())
         day_time = int(time.mktime(datetime.date.today().timetuple()))
