@@ -521,6 +521,7 @@ class PersonalInfoHandler(RedisHandler):
 class UnionIdHandler(RedisHandler):
     @authenticated_async
     async def post(self):
+        print(self.request.body)
         encryptedData = self.get_argument("encryptedData", "")
         iv = self.get_argument("iv", "")
         uuid = self.current_user.uuid
