@@ -521,17 +521,16 @@ class PersonalInfoHandler(RedisHandler):
 class UnionIdHandler(RedisHandler):
     @authenticated_async
     async def post(self):
-        print(self.request.body)
         encryptedData = self.get_argument("encryptedData", "")
         iv = self.get_argument("iv", "")
         uuid = self.current_user.uuid
-
         user_info_session_key = "sx_info:" + uuid
-        union_id = to_str(self.redis_spare.hget(user_info_session_key, b"union_id"))
+        union_id = to_str(self.redis_spare.hget(user_info_session_key, "union_id"))
         if not union_id:
             if encryptedData and iv:
-                open_id = to_str(self.redis_spare.hget(user_info_session_key, b"open_id"))
-                session_key = self.get_session(open_id)
+                open_id = to_str(self.redis_spare.hget(user_info_session_key, "openid"))
+                session_dict = self.get_session(open_id)
+                session_key = session_dict[0].get("session_key", "")
                 pc = WXBizDataCrypt(APPID, session_key)
                 WX_data = pc.decrypt(encryptedData, iv)
                 union_id = WX_data.get("unionId", "")
