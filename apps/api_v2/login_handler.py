@@ -52,10 +52,10 @@ class LoginHandler(RedisHandler):
             return self.write_json(status=-1, msg="上报code有误，请核对")
 
         # 1.获取用户信息
-        print("js_code", js_code)
+        # print("js_code", js_code)
         user_info = get_user_info(js_code)
         # user_info = {"openid": "sss", "session_key": "aaa"}
-        print("user_info", user_info)
+        # print("user_info", user_info)
         open_id = user_info.get("openid", "")
 
         if not open_id:
@@ -515,6 +515,36 @@ class PersonalInfoHandler(RedisHandler):
         self.redis_spare.hset("user_avatar", name, avatar)
 
         self.write_json(msg="success")
+
+
+@route('/unionId')
+class UnionIdHandler(RedisHandler):
+    @authenticated_async
+    async def post(self):
+        encryptedData = self.get_argument("encryptedData", "")
+        iv = self.get_argument("iv", "")
+        uuid = self.current_user.uuid
+
+        user_info_session_key = "sx_info:" + uuid
+        union_id = to_str(self.redis_spare.hget(user_info_session_key, b"union_id"))
+        if not union_id:
+            if encryptedData and iv:
+                open_id = to_str(self.redis_spare.hget(user_info_session_key, b"open_id"))
+                session_key = self.get_session(open_id)
+                pc = WXBizDataCrypt(APPID, session_key)
+                WX_data = pc.decrypt(encryptedData, iv)
+                union_id = WX_data.get("unionId", "")
+                self.redis_spare.hset(user_info_session_key, "uniond_id", union_id)
+            else:
+                return self.write_json(status=-1, msg="上报信息有误，请核对")
+        data = {"unionId": union_id}
+        self.write_json(data)
+
+
+
+
+
+
 
 
 
