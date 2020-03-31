@@ -52,8 +52,10 @@ class LoginHandler(RedisHandler):
             return self.write_json(status=-1, msg="上报code有误，请核对")
 
         # 1.获取用户信息
+        print("js_code", js_code)
         user_info = get_user_info(js_code)
         # user_info = {"openid": "sss", "session_key": "aaa"}
+        print("user_info", user_info)
         open_id = user_info.get("openid", "")
 
         if not open_id:
