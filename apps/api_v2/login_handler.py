@@ -532,6 +532,8 @@ class UnionIdHandler(RedisHandler):
                 session_dict = self.get_session(open_id)
                 session_key = session_dict[0].get("session_key", "")
                 print("session_key", session_key)
+                print("encryptedData", encryptedData)
+                print("iv", iv)
                 pc = WXBizDataCrypt(APPID, session_key)
                 WX_data = pc.decrypt(encryptedData, iv)
                 union_id = WX_data.get("unionId", "")

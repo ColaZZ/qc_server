@@ -9,9 +9,9 @@ class WXBizDataCrypt:
 
     def decrypt(self, encryptedData, iv):
         # base64 decode
-        sessionKey = base64.b64decode(self.sessionKey)
-        encryptedData = base64.b64decode(encryptedData)
-        iv = base64.b64decode(iv)
+        sessionKey = base64.b64decode(self.encode(self.sessionKey))
+        encryptedData = base64.b64decode(self.encode(encryptedData))
+        iv = base64.b64decode(self.encode(iv))
 
         cipher = AES.new(sessionKey, AES.MODE_CBC, iv)
 
@@ -24,3 +24,13 @@ class WXBizDataCrypt:
 
     def _unpad(self, s):
         return s[:-ord(s[len(s)-1:])]
+
+    def encode(self, strg):
+        lens = len(strg)
+        lenx = lens - (lens % 4 if lens % 4 else 4)
+        try:
+            result = base64.decodebytes(strg[:lenx])
+        except:
+            result = ""
+
+        return result
