@@ -9,9 +9,9 @@ class WXBizDataCrypt:
 
     def decrypt(self, encryptedData, iv):
         # base64 decode
-        sessionKey = base64.b64decode(self.encode(self.sessionKey))
-        encryptedData = base64.b64decode(self.encode(encryptedData))
-        iv = base64.b64decode(self.encode(iv))
+        sessionKey = base64.b64decode(self.sessionKey)
+        encryptedData = base64.b64decode(encryptedData)
+        iv = base64.b64decode(iv)
 
         cipher = AES.new(sessionKey, AES.MODE_CBC, iv)
 
